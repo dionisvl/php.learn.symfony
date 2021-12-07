@@ -1,11 +1,9 @@
 <?php
 
-//--error_reporting(E_ALL);
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+use App\Kernel;
 
-echo 'index';
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-$x = 234234;
-
-
-echo $x;
+return function (array $context) {
+    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+};
