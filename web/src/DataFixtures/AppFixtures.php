@@ -12,11 +12,13 @@
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
+use App\Entity\Customer;
 use App\Entity\Post;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use function Symfony\Component\String\u;
@@ -32,11 +34,20 @@ class AppFixtures extends Fixture
         $this->slugger = $slugger;
     }
 
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager)
     {
-        $this->loadUsers($manager);
-        $this->loadTags($manager);
-        $this->loadPosts($manager);
+        $faker = Factory::create();
+
+        for ($i = 0; $i < 50; $i++) {
+            $customer = new Customer();
+            $customer->setFirstName($faker->firstName);
+            $customer->setLastName($faker->lastName);
+            $customer->setEmail($faker->email);
+            $customer->setPhoneNumber($faker->phoneNumber);
+            $manager->persist($customer);
+        }
+
+        $manager->flush();
     }
 
     private function loadUsers(ObjectManager $manager): void
