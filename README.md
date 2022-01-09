@@ -5,14 +5,13 @@ Docker running Nginx, PHP-FPM, MySQL and PHPMyAdmin.
 ### Installation
 - docker compose up --build
 - composer install
-- create database with name "my.symf.test"
-- check current MySQL ip by command: `docker inspect mysql | grep IPAddress`
+- create database if not exists with name "my.symf.test"
+- check current MySQL ip by command: `docker inspect mysql | grep IPAddress`/`docker inspect postgres | grep IPAddress`
 - your config for connection from OS: `DATABASE_URL="mysql://root:root@127.0.0.1:8989/my.symf.test?serverVersion=8.0`
 - your config for connection from docker: `DATABASE_URL="mysql://root:root@172.18.0.2:3306/my.symf.test?serverVersion=8.0"`
-
-- php bin/console doctrine:migrations:migrate
-- php bin/console doctrine:fixtures:load
-- open url "http://localhost:8000/"
+- `php bin/console doctrine:migrations:migrate`
+- `php bin/console doctrine:fixtures:load`
+- open url - http://localhost:8000/
 ### Images to use
 
 * [Nginx](https://hub.docker.com/_/nginx/)
@@ -26,12 +25,16 @@ You should be careful when installing third party web servers such as MySQL or N
 
 This project use the following ports :
 
-| Server     | Port |
-|------------|------|
-| MySQL      | 8989 |
-| PHPMyAdmin | 8080 |
-| Nginx      | 8000 |
-| Nginx SSL  | 3000 |
+| Server          | Port | port internal |
+|-----------------|------|---------------|
+| Nginx           | 8000 |               |
+| Nginx SSL       | 3000 |               |
+| Optional pg:    |      |               |
+| PostgreSQL      | 5434 |   5432        |         
+| Adminer         | 8080 |               |
+| Optional mysql: |      |               |
+| MySQL           | 8989 |  3306         |
+| PHPMyAdmin      | 8080 |               |
 
 #### Connecting MySQL from [PDO](http://php.net/manual/en/book.pdo.php)
 

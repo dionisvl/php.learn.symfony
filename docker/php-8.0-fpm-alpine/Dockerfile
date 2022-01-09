@@ -10,7 +10,12 @@ ENV \
 	PHP_VERSION=php8.0
 
 ARG XDEBUG_VERSION=3.1.1
-ARG PHP_EXTENSIONS="bcmath mysqli pdo_mysql pcntl zip"
+ARG PHP_EXTENSIONS="bcmath pdo pdo_pgsql mysqli pdo_mysql pcntl zip"
+
+# prepare for postgreSql-apine:
+RUN set -ex \
+  && apk --no-cache add \
+    postgresql-dev
 
 # Install dependencies
 RUN \

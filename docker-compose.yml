@@ -16,7 +16,7 @@ services:
         restart: always
         depends_on:
             - php-fpm-test-sber
-            - mysqldb
+            - pg_db
 
     php-fpm-test:
         container_name: php-fpm-test-sber
@@ -28,31 +28,52 @@ services:
             XDEBUG_CONFIG: "remote_host=host.docker.internal"
             PHP_IDE_CONFIG: "serverName=my.test"
 
-    myadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin-sber
-        ports:
-            - "8080:80"
-        environment:
-            - PMA_ARBITRARY=1
-            - PMA_HOST=${MYSQL_HOST}
-        restart: always
-        depends_on:
-            - mysqldb
-
-    mysqldb:
-        platform: linux/amd64
-        image: mysql:${MYSQL_VERSION}
-        container_name: ${MYSQL_HOST}
+    pg_db:
+        image: postgres:${POSTGRES_VERSION}
+        container_name: ${POSTGRES_HOST}
         restart: always
         env_file:
             - ".env"
         environment:
-            - MYSQL_DATABASE=${MYSQL_DATABASE}
-            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-            - MYSQL_USER=${MYSQL_USER}
-            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
         ports:
-            - "8989:3306"
+            - "5434:5432"
         volumes:
-            - "./data/db/mysql:/var/lib/mysql"
+            - "./data/db/pg:/var/lib/postgresql/data"
+
+    adminer:
+        image: adminer
+        restart: always
+        ports:
+            - 8080:8080
+
+#    mysqldb:
+#        platform: linux/amd64
+#        image: mysql:${MYSQL_VERSION}
+#        container_name: ${MYSQL_HOST}
+#        restart: always
+#        env_file:
+#            - ".env"
+#        environment:
+#            - MYSQL_DATABASE=${MYSQL_DATABASE}
+#            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+#            - MYSQL_USER=${MYSQL_USER}
+#            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+#        ports:
+#            - "8989:3306"
+#        volumes:
+#            - "./data/db/mysql:/var/lib/mysql"
+
+#    myadmin:
+#        image: phpmyadmin/phpmyadmin:fpm-alpine
+#        container_name: phpmyadmin-sber
+#        ports:
+#            - "8080:80"
+#        environment:
+#            - PMA_ARBITRARY=1
+#            - PMA_HOST=${MYSQL_HOST}
+#        restart: always
+#        depends_on:
+#            - mysqldb
