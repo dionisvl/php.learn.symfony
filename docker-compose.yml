@@ -21,7 +21,7 @@ services:
     php-fpm-test:
         container_name: php-fpm-test-sber
         build:
-            context: docker/php-7.4-fpm-alpine
+            context: docker/php-8.0-fpm-alpine
         volumes:
             - "./web:/var/www/html"
         environment:
@@ -41,6 +41,7 @@ services:
             - mysqldb
 
     mysqldb:
+        platform: linux/amd64
         image: mysql:${MYSQL_VERSION}
         container_name: ${MYSQL_HOST}
         restart: always

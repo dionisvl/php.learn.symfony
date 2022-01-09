@@ -2,6 +2,17 @@
 
 Docker running Nginx, PHP-FPM, MySQL and PHPMyAdmin.
 
+### Installation
+- docker compose up --build
+- composer install
+- create database with name "my.symf.test"
+- check current MySQL ip by command: `docker inspect mysql | grep IPAddress`
+- your config for connection from OS: `DATABASE_URL="mysql://root:root@127.0.0.1:8989/my.symf.test?serverVersion=8.0`
+- your config for connection from docker: `DATABASE_URL="mysql://root:root@172.18.0.2:3306/my.symf.test?serverVersion=8.0"`
+
+- php bin/console doctrine:migrations:migrate
+- php bin/console doctrine:fixtures:load
+- open url "http://localhost:8000/"
 ### Images to use
 
 * [Nginx](https://hub.docker.com/_/nginx/)
