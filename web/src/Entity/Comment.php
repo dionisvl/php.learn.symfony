@@ -55,10 +55,12 @@ class Comment
      * @Assert\Length(
      *     min=5,
      *     minMessage="comment.too_short",
-     *     max=10000,
-     *     maxMessage="comment.too_long"
      * )
      */
+    #[Assert\Length(
+        max: 20,
+        maxMessage: "comment.too_long",
+    )]
     private $content;
 
     /**
