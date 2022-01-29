@@ -3,12 +3,17 @@
 Docker running Nginx, PHP-FPM, MySQL and PHPMyAdmin.
 
 ### Installation
+- `docker volume create --name=pgdata` (https://forums.docker.com/t/data-directory-var-lib-postgresql-data-pgdata-has-wrong-ownership/17963/31)
 - docker compose up --build
 - composer install
 - create database if not exists with name "my.symf.test"
-- check current MySQL ip by command: `docker inspect mysql | grep IPAddress`/`docker inspect postgres | grep IPAddress`
+- check current DataBase IP by command:   
+ linux variant: `docker inspect mysql | grep IPAddress`/`docker inspect postgres | grep IPAddress`  
+ win variant: `docker inspect myphpqad-pg-db-1 | findstr IPAddress`
 - your config for connection from OS: `DATABASE_URL="mysql://root:root@127.0.0.1:8989/my.symf.test?serverVersion=8.0`
-- your config for connection from docker: `DATABASE_URL="mysql://root:root@172.18.0.2:3306/my.symf.test?serverVersion=8.0"`
+- your config for connection from docker (and Adminer): `DATABASE_URL="mysql://root:root@172.18.0.2:3306/my.symf.test?serverVersion=8.0"`
+- Adminer example working url for PG:  
+http://localhost:8080/?pgsql=172.19.0.2&username=root
 - `php bin/console doctrine:migrations:migrate`
 - `php bin/console doctrine:fixtures:load`
 - open url - http://localhost:8000/
@@ -30,7 +35,7 @@ This project use the following ports :
 | Nginx           | 8000 |               |
 | Nginx SSL       | 3000 |               |
 | Optional pg:    |      |               |
-| PostgreSQL      | 5434 |   5432        |         
+| PostgreSQL      | 5432 |   5432        |         
 | Adminer         | 8080 |               |
 | Optional mysql: |      |               |
 | MySQL           | 8989 |  3306         |
